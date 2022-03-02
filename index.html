@@ -9,18 +9,18 @@
         body {
             display: flex;
             flex-flow: column nowrap;
+            min-height: 100vh;
             background: rgb(255, 255, 0);
         }
 
         body .top {
-            flex: 1 0 auto;
-            height: 70px;
+            flex: 0 0 70px;
+            /* height: 70px; */
             background: rgb(61, 62, 75);
         }
 
         body .center {
-            flex: 2 0 650px;
-            height: 100px;
+            flex: 1 0 650px;
             background: rgb(255, 255, 255);
             justify-content: space-between;
 
@@ -29,13 +29,13 @@
         }
 
         body .footer {
-            flex: 0 0 auto;
-            height: 100px;
+            flex: 0 0 70px;
+            /* height: 70px; */
             background: rgb(0, 0, 255);
         }
 
         .center #index {
-            flex: 0 0 250px;
+            flex: 0 0 100px;
             height: 100%;
             background: #000;
         }
@@ -84,7 +84,7 @@
 <body>
     <div class="top">
         <ul>
-            <li><a class="active" href="#home">主页</a></li>
+            <li id="test"><a class="active" href="#home" onclick="onclick">主页</a></li>
             <li><a href="#news">新闻</a></li>
             <li><a href="#contact">联系</a></li>
             <li><a href="#about">关于</a></li>
@@ -95,5 +95,22 @@
         <div id="content"></div>
     </div>
     <div class="footer"></div>
+    <script>
+        flag = -1
+        onclick = () => {
+            li1 = document.querySelectorAll(".top ul li:nth-child(1)");
+            index = document.getElementById('index');
+            if(li1.length>0){
+                li1[0].style.width = flag==-1 ? "200px":"100px";
+                index.style.flexBasis = flag==-1 ? "200px":"100px";
+                flag = flag * -1;
+            }
+            
+            // e = window.event.srcElement;
+            // e = e.parentElement;
+            // e.style.width = flag==-1 ? "200px":"100px";
+            // flag = flag * -1;
+        }
+    </script>
 </body>
 </html>
