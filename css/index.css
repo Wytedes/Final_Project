@@ -1,0 +1,117 @@
+body {
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+    background: rgb(255, 255, 0);
+    padding: 0;
+    margin: 0;
+}
+
+body #top {
+    flex: 0 0 70px;
+    /* height: 70px; */
+    background: rgb(0, 225, 255);
+}
+
+body #center {
+    flex: 1 0 650px;
+    background: rgb(255, 255, 255);
+    justify-content: space-between;
+
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+body #footer {
+    flex: 0 0 70px;
+    /* height: 70px; */
+    background: rgb(0, 0, 255);
+}
+
+#center #index {
+    flex: 0 0 100px;
+    height: 100%;
+    background: #000;
+}
+
+#center #content {
+    flex: 1 0 500px;
+    height: 100%;
+    background: rgb(50, 86, 92);
+}
+
+#top ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(30, 124, 251);
+
+    height:100%;
+}
+
+#top li {
+    float: left;
+    width: 100px;
+    height:100%;
+}
+
+#top li a {
+    display: flex;
+    color: white;
+    /* padding: 14px; */
+    text-decoration: none;
+
+    height:100%;
+    width: 100%;
+    flex-flow: row nowrap;
+    justify-content: center;    /*主轴内对齐*/
+    align-items: center;    /*交叉轴对齐*/
+}
+
+#top ul li:nth-child(1) a{
+    border-right: 3px dashed rgb(12, 100, 216);
+}
+
+#top li a:hover {
+    background-color: rgb(28, 111, 219);
+}
+
+#index ul {
+    display: flex;
+    flex-flow: column nowrap;
+    height: 100%;
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(30, 124, 251);
+
+}
+
+#index li {
+    flex: 0 0 75px;
+    display:flex;
+    flex-flow: row nowrap;
+    justify-content: center;    /*主轴内对齐*/
+    align-items: stretch;    /*交叉轴对齐*/
+}
+
+#index li a {
+    flex:1 0 auto;
+    display: flex;
+    color: white;
+    padding-left: 14px;
+    padding-right: 30px;
+    text-decoration: none;
+
+    flex-flow: row nowrap;
+    justify-content: flex-start;    /*主轴内对齐*/
+    align-items: center;    /*交叉轴对齐*/
+    /* align-content: center;  主轴间对齐 */
+}
+
+#index li a:hover {
+    background-color: rgb(28, 111, 219);
+}
