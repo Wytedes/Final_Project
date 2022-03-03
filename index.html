@@ -5,110 +5,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body {
-            display: flex;
-            flex-flow: column nowrap;
-            min-height: 100vh;
-            background: rgb(255, 255, 0);
-            padding: 0;
-            margin: 0;
-        }
-
-        body .top {
-            flex: 0 0 70px;
-            /* height: 70px; */
-            background: rgb(0, 225, 255);
-        }
-
-        body .center {
-            flex: 1 0 650px;
-            background: rgb(255, 255, 255);
-            justify-content: space-between;
-
-            display: flex;
-            flex-flow: row nowrap;
-        }
-
-        body .footer {
-            flex: 0 0 70px;
-            /* height: 70px; */
-            background: rgb(0, 0, 255);
-        }
-
-        .center #index {
-            flex: 0 0 100px;
-            height: 100%;
-            background: #000;
-        }
-
-        .center #content {
-            flex: 1 0 500px;
-            height: 100%;
-            background: rgb(50, 86, 92);
-        }
-
-        .top ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: rgb(30, 124, 251);
-
-            height:100%;
-        }
-
-        .top li {
-            float: left;
-            width: 100px;
-            height:100%;
-        }
-
-        .top li a {
-            display: flex;
-            color: white;
-            /* padding: 14px; */
-            text-decoration: none;
-
-            height:100%;
-            width: 100%;
-            flex-flow: row wrap;
-            justify-content: center;    /*主轴内对齐*/
-            align-content: center;  /*主轴间对齐*/
-        }
-
-        .top li a:hover {
-            background-color: #111;
-        }
-        
-    </style>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
-    <div class="top">
+    <div id="top">
         <ul>
-            <li id="test"><a class="active" href="#home" onclick="onclick">主页</a></li>
+            <li id="test" onclick="indexOnClick()"><a class="active" href="#home">目录</a></li>
             <li><a href="#news">新闻</a></li>
             <li><a href="#contact">联系</a></li>
             <li><a href="#about">关于</a></li>
         </ul>
     </div>
-    <div class="center">
-        <div id="index"></div>
-        <div id="content"></div>
+    <div id="center">
+        <div id="index">
+            <ul>
+                <li><a class="active" href="#home">主页</a></li>
+                <li><a href="#news">新闻</a></li>
+                <li><a href="#contact">联系</a></li>
+                <li><a href="#about">关于</a></li>
+            </ul>
+        </div>
+        <div id="content">你所热爱的，就是你的生活</div>
     </div>
-    <div class="footer"></div>
+    <div id="footer"></div>
     <script>
         flag = -1
-        onclick = () => {
-            li1 = document.querySelectorAll(".top ul li:nth-child(1)");
+        indexOnClick = () => {
+            li1 = document.querySelectorAll("#top ul li:nth-child(1)");
             index = document.getElementById('index');
+            indexa = index.querySelectorAll('li a')
             if(li1.length>0){
                 li1[0].style.width = flag==-1 ? "200px":"100px";
                 index.style.flexBasis = flag==-1 ? "200px":"100px";
-                flag = flag * -1;
             }
+            for(i=0;i<indexa.length;i++){
+                indexa[i].style.justifyContent = flag ==-1 ? "flex-end":"flex-start"
+            }
+            flag = flag * -1;
             
-            // e = window.event.srcElement;
+            // e = window.event.srcElement; //获取被点击的元素
+            // console.log(e)
             // e = e.parentElement;
             // e.style.width = flag==-1 ? "200px":"100px";
             // flag = flag * -1;
