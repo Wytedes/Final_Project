@@ -1,15 +1,15 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import user
-# from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 
 def begin(request):
     return render(request, 'begin.html')
 
-# @csrf_exempt
+@csrf_exempt
 def login(request):
-    acc = request.GET.get('account')
-    pwd = request.GET.get('password')
+    acc = request.POST.get('account')
+    pwd = request.POST.get('password')
     getAllUser = user.objects.all()
     getUser = getAllUser.filter(account=acc)
     if len(getUser) > 0:

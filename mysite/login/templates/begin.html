@@ -7,34 +7,28 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{% url 'login:login' %}" method="get">
+    <!-- <form action="{% url 'login:login' %}" method="get">
         {% csrf_token %}
         账号：<input name="account"><br>
         密码：<input name="password" type="password"><br>
         <p id="msg"></p><br>
         <input value="login" type="submit">
-        <!-- <button onclick="getResponseMsg()">login</button> -->
 
-    </form>
+    </form> -->
+    <p id="rsp">testing</p><br>
+    <button onclick="getResponseMsg()">send</button>
+    
     <script>
         function getResponseMsg() {
-            var url = "{% url 'login:login' %}";
-            var xhr = new XMLHttpRequest();
-            xhr.responseType = "text";
-            xhr.open('GET', url)
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;");
-
-            xhr.send({'account': 'test', 'password': 'password'});
-            xhr.onload = function(e){
-                console.log('httpPostTest onload。e====>' + JSON.stringify(e));
-            }
-
-            xhr.onreadystatechange = function(e) {
-                console.log('httpPostTest onreadystatechange。e====>' + JSON.stringify(e));
-                if(xhr.readyState == 4 && xhr.status == 200){
-                    var xhrRes = xhr.responseText;
-                    console.log('httpPostTest return message====>' + xhrRes);
-                    //正常情况下收到返回值 {"status": 1, "res": "http post test return!"}
+            // 原生JS
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("POST", "{% url 'login:login' %}", true);
+            xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlHttp.send("account=zhanglin&password=654321");
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+                    document.getElementById("rsp").innerHTML = xmlHttp.response;
+                    console.log(xmlHttp.response)
                 }
             };
         }
