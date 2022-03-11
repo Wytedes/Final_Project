@@ -8,17 +8,18 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <!-- <form action="{% url 'login:login' %}" method="get">
+    <form action="{% url 'login:login' %}" method="get">
         {% csrf_token %}
         账号：<input name="account"><br>
         密码：<input name="password" type="password"><br>
         <p id="msg"></p><br>
         <input value="login" type="submit">
 
-    </form> -->
+    </form>
     <p id="rsp">testing</p><br>
-    <button onclick="getResponseMsg1()">send</button>
-    <button onclick="getResponseMsg2()">send</button>
+    <button onclick="getResponseMsg1()">send1</button>
+    <button onclick="getResponseMsg2()">send2</button>
+    <button onclick="getResponseMsg3()">send3</button>
 
     <script>
         function getResponseMsg1() {
@@ -35,12 +36,44 @@
             };
         }
 
-        function getResponseMsg2(){
-            let param = new URLSearchParams();
-            param.append('account', 'zhanglin');
-            param.append('password', '654321')
+        function getResponseMsg2() {
+            let param = new URLSearchParams('account=zhanglin&password=654321');
+            // param.append('account', 'zhanglin');
+            // param.append('password', '654321')
            // axios
-           axios.post("{% url 'login:login' %}", param)
+           axios.post("{% url 'login:login' %}", 'account=zhanglin&password=654321')
+            .then(function (response) {
+                document.getElementById("rsp").innerHTML = response.data;
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
+                // 总是会执行
+                console.log("执行完成")
+            });  
+        }
+
+        function getResponseMsg3() {
+            let param = new URLSearchParams('account=zhanglin&password=654321');
+            // param.append('account', 'zhanglin');
+            // param.append('password', '654321')
+           // axios
+           axios.post("{% url 'login:login' %}", {account: 'zhanglin', password: '654321'},
+                    {transformRequest: [function (data) {
+                        // Do whatever you want to transform the data
+                        let ret = ''
+                        for (let it in data) {
+                        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        console.log(ret)
+                        return ret
+                    }],
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }}
+           )
             .then(function (response) {
                 document.getElementById("rsp").innerHTML = response.data;
                 console.log(response.data)

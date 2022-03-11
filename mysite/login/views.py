@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from .models import user
@@ -10,15 +11,15 @@ def begin(request):
 def login(request):
     acc = request.POST.get('account')
     pwd = request.POST.get('password')
+    jsn = request.body.decode('utf-8')
+    # jsn = json.loads(jsn)
+    print(jsn)
     print(request.POST)
     getAllUser = user.objects.all()
     getUser = getAllUser.filter(account=acc)
-    if len(getUser) > 0:
-        getUser = getUser[0]
-        if getUser.password == pwd:
-            return JsonResponse({'username': acc, 'pwd': pwd})
-        else:
-            return HttpResponse("Account or password is incorrect!")
+    
+    if len(getUser) > 0 and getUser[0].password == pwd:
+        return JsonResponse({'username': acc, 'pwd': pwd})
     else:
-        return HttpResponse("Account not exits!")
+        return HttpResponse("Account or password is incorrect!")
     
