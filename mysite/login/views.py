@@ -10,6 +10,7 @@ def begin(request):
 def login(request):
     acc = request.POST.get('account')
     pwd = request.POST.get('password')
+    print(request.POST)
     getAllUser = user.objects.all()
     getUser = getAllUser.filter(account=acc)
     if len(getUser) > 0:

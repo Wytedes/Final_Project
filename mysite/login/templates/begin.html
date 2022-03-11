@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <!-- <form action="{% url 'login:login' %}" method="get">
@@ -16,10 +17,11 @@
 
     </form> -->
     <p id="rsp">testing</p><br>
-    <button onclick="getResponseMsg()">send</button>
-    
+    <button onclick="getResponseMsg1()">send</button>
+    <button onclick="getResponseMsg2()">send</button>
+
     <script>
-        function getResponseMsg() {
+        function getResponseMsg1() {
             // 原生JS
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("POST", "{% url 'login:login' %}", true);
@@ -31,6 +33,25 @@
                     console.log(xmlHttp.response)
                 }
             };
+        }
+
+        function getResponseMsg2(){
+            let param = new URLSearchParams();
+            param.append('account', 'zhanglin');
+            param.append('password', '654321')
+           // axios
+           axios.post("{% url 'login:login' %}", param)
+            .then(function (response) {
+                document.getElementById("rsp").innerHTML = response.data;
+                console.log(response.data)
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .then(function () {
+                // 总是会执行
+                console.log("执行完成")
+            });  
         }
     </script>
 </body>
