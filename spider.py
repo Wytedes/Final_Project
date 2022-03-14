@@ -41,23 +41,11 @@ def MovieSpider(page):
     selector = etree.HTML(response)
     # print(response)
 
-    list_pub = []
-    list_pic = []
-    list_tag = []
-    list_count = []
-    list_detail = []
-    list_name = selector.xpath('//div[@class="hd"]/a/span[@class="title"]/text()')
-    print([i.replace(u'\xa0', '').replace('/', '') for i in list_name])
-    list_book = selector.xpath('//div[@class="book-info"]/a[@class="bookname"]/@href')
-    list_score =[ it.split('(')[-1][:-2] for it in selector.xpath('//div[@class="book-info"]/p[@class="hidden-md-and-up"]/text()') ] 
-    list_tag =selector.xpath('//div[@class="book-info"]/p[@class="bookinfo-tags"]/a/text()') 
-    list_author =[]
-    for i in list_book:
-        a,b,c = getdetail('https://www.yousu.com'+i)
-        list_count.append(a[0])
-        list_detail.append(b)
-        list_author.append(c)
-
+    movie_list = selector.xpath('//div[@class="info"]/div[@class="hd"]/a')
+    movie_title_item_list = [tuple(i.xpath('span[@class="title"]/text()')) for i in movie_list]
+    title_list = [tuple([n.encode('utf-8').decode('utf-8') for n in i]) for i in movie_title_item_list]
+    title_list = [tuple(n.replace(u'\xa0', '').replace('/', '') for n in i) for i in title_list]
+    print(title_list)
     # 数据库
     """ cur = db.cursor()
     for name, link, tag,author,scorenum, bcount, detail in zip(list_name, list_book,list_tag, list_author,list_score,list_count, list_detail):
@@ -68,5 +56,5 @@ def MovieSpider(page):
 
 
 if __name__ == '__main__':
-    for p in range(1,3):
-        MovieSpider(p)
+    # for p in range(1,3):
+    MovieSpider(0)
