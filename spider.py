@@ -39,13 +39,22 @@ def MovieSpider(page):
     req = requests.get(url, headers=headers, timeout=10)
     response = req.content.decode('utf-8')
     selector = etree.HTML(response)
-    # print(response)
 
+    # 获取电影名称[(中文名[, 外文名, ...,]), (中文名[, 外文名, ...,]), ...]
+    
     movie_list = selector.xpath('//div[@class="info"]/div[@class="hd"]/a')
     movie_title_item_list = [tuple(i.xpath('span[@class="title"]/text()')) for i in movie_list]
-    title_list = [tuple([n.encode('utf-8').decode('utf-8') for n in i]) for i in movie_title_item_list]
+    title_list = [tuple([n.encode().decode('utf-8') for n in i]) for i in movie_title_item_list]
+    # rusult
     title_list = [tuple(n.replace(u'\xa0', '').replace('/', '') for n in i) for i in title_list]
-    print(title_list)
+    
+    # 获取电影分类/描述
+    movie_description = selector.xpath('//div[@class="info"]/div[@class="bd"]/p')
+    description_item_list = [tuple([i.encode('utf-8').decode('utf-8').replace('\n', '').replace(' ', '') for i in p.xpath('text()')]) for p in movie_description]
+    description_item_list = [tuple(s.replace(u'\xa0', '').replace('/', '') for s in item) for item in description_item_list if any(item)]
+    print(json.dumps(description_item_list, indent=2, ensure_ascii=False))
+    
+    
     # 数据库
     """ cur = db.cursor()
     for name, link, tag,author,scorenum, bcount, detail in zip(list_name, list_book,list_tag, list_author,list_score,list_count, list_detail):
