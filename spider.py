@@ -7,14 +7,16 @@ import sys,re,json
 
 
 #爬虫系统 
+
 config = {
     'host':"127.0.0.1",
-    'user':"root",
-    'passwd':"wutuxing750",
-    'database':"test"
+    'user':"zhanglin",
+    'passwd':"jeroami233",
+    'database':"SpiderData",
+    'port':1433,
 }
 
-""" db = pymysql.connect(**config) """
+db = pymysql.connect(**config)
 
 current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
@@ -34,8 +36,8 @@ def getdetail(url):
 
 def MovieSpider(page):
 
-    url = f'https://movie.douban.com/top250?start={(page-1) * 25}'
-
+    url = f'http://movie.douban.com/top250?start={page * 25}'
+    
     req = requests.get(url, headers=headers, timeout=10)
     response = req.content.decode('utf-8')
     selector = etree.HTML(response)
@@ -45,14 +47,17 @@ def MovieSpider(page):
     movie_list = selector.xpath('//div[@class="info"]/div[@class="hd"]/a')
     movie_title_item_list = [tuple(i.xpath('span[@class="title"]/text()')) for i in movie_list]
     title_list = [tuple([n.encode().decode('utf-8') for n in i]) for i in movie_title_item_list]
-    # rusult
+    # result
     title_list = [tuple(n.replace(u'\xa0', '').replace('/', '') for n in i) for i in title_list]
     
     # 获取电影分类/描述
     movie_description = selector.xpath('//div[@class="info"]/div[@class="bd"]/p')
-    description_item_list = [tuple([i.encode('utf-8').decode('utf-8').replace('\n', '').replace(' ', '') for i in p.xpath('text()')]) for p in movie_description]
-    description_item_list = [tuple(s.replace(u'\xa0', '').replace('/', '') for s in item) for item in description_item_list if any(item)]
-    print(json.dumps(description_item_list, indent=2, ensure_ascii=False))
+    description_item_list = [tuple([i.encode('utf-8').decode('utf-8').replace('\n', '').strip() for i in p.xpath('text()')]) for p in movie_description]
+    # result
+    description_item_list = [tuple(s.replace(u'\xa0', '') for s in item) for item in description_item_list if any(item)]
+    desc_list = [i[1].split('/')[2] for i in description_item_list]
+    print(json.dumps(desc_list, indent=2, ensure_ascii=False))
+    print(len(desc_list))
     
     
     # 数据库

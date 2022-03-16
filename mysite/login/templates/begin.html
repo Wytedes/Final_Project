@@ -6,20 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        form {
+            position: sticky;
+            top: 0px;
+        }
+
+        .bl{
+            height: 1000px;
+        }
+        body {
+            height: 100%;
+            overflow: auto;
+        }
+    </style>
 </head>
 <body>
-    <form action="{% url 'login:login' %}" method="get">
-        {% csrf_token %}
-        账号：<input name="account"><br>
-        密码：<input name="password" type="password"><br>
-        <p id="msg"></p><br>
-        <input value="login" type="submit">
+    <div class="out">
+        <form action="{% url 'login:login' %}" method="get">
+            {% csrf_token %}
+            账号：<input name="account"><br>
+            密码：<input name="password" type="password"><br>
+            <p id="msg"></p><br>
+            <input value="login" type="submit">
 
-    </form>
-    <p id="rsp">testing</p><br>
-    <button onclick="getResponseMsg1()">send1</button>
-    <button onclick="getResponseMsg2()">send2</button>
-    <button onclick="getResponseMsg3()">send3</button>
+        </form>
+        <p id="rsp">testing</p><br>
+        <button onclick="getResponseMsg1()">send1</button>
+        <button onclick="getResponseMsg2()">send2</button>
+        <button onclick="getResponseMsg3()">send3</button>
+    </div>
+    <div class="bl"></div>
 
     <script>
         function getResponseMsg1() {
