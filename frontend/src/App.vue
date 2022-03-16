@@ -2,14 +2,17 @@
   <div id="app">
     <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <Top :indexlist="list"/>
+    <Top :indexlist="list" :expand="isexpand" @expand='expand'/>
+    <Center :indexlist="list" :expand="isexpand" @expand='expand'/>
+    <Footer/>
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
-import Top from './components/Top/Top.vue'
-
+import Top from './components/Top/Top.vue';
+import Center from './components/Center/Center.vue';
+import Footer from './components/Footer/Footer.vue';
 export default {
   name: 'App',
   data () {
@@ -21,22 +24,29 @@ export default {
         {title: '关于', link: '#about'},
       ],
       flag: -1,
+      isexpand: false,
     }
   },
-  
   components: {
-    Top
+    Top,
+    Center,
+    Footer,
+  },
+  methods: {
+    expand(flag){
+      this.isexpand = flag;
+    }
   },
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 100vh;
+    background: rgb(255, 255, 0);
+    padding: 0;
+    margin: 0;
 }
 </style>

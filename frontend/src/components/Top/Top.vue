@@ -1,8 +1,8 @@
 <template>
   <div id="top">
         <ul>
-            <li v-for="(item, index) in indexlist" :key='item.title'>
-                <a :href="item.link">{{index}}{{ item.title }}</a>
+            <li v-for="item in indexlist" :key='item.title'>
+                <a :href="item.link">{{ item.title }}</a>
             </li>
         </ul>
    </div>
@@ -13,28 +13,33 @@ export default {
     name: 'TopBar',
     props:{
         indexlist: Array,
+        expand: Boolean
     },
     data() {
         return {
-            flag: -1
+            flag: this.expand,
         }
     },
     methods: {
-        indexOnClick () {
-            console.log('Hi')
+        expandIndex () {
             var li1 = document.querySelectorAll("#top ul li:nth-child(1)");
             if(li1.length>0){
-                li1[0].style.width = this.flag==-1 ? "200px":"100px";
+                li1[0].style.width = this.flag ? "200px":"100px";
             }
-            this.flag = this.flag * -1
+            this.flag = !this.flag
         }
     },
+    watch:{
+        flag(value, newvalue) {
+            this.$emit('expand', newvalue);
+        },
+    },
     mounted() {
+        this.expandIndex();
         var li1 = document.querySelectorAll("#top ul li:nth-child(1)");
-        for(var i=0;i<li1.length;i++){
-            console.log(li1[i])
+        if(li1.length>0){
+            li1[0].onclick = this.expandIndex
         }
-        li1[0].onclick = this.indexOnClick;
     },
 }
 
@@ -45,6 +50,7 @@ export default {
         flex: 0 0 70px;
         /* height: 70px; */
         background: rgb(0, 225, 255);
+        min-width: 1000px;
     }
 
     #top ul {
