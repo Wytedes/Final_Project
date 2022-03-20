@@ -7,7 +7,10 @@
                 </li>
             </ul>
         </div>
-        <div id="content">你所热爱的，就是你的生活</div>
+        <div id="content">
+            <!-- 指定组件的呈现位置 -->
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 

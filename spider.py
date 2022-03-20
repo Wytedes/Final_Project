@@ -1,5 +1,6 @@
 
 import pymysql
+import pymssql
 import requests
 from lxml import etree
 import time
@@ -9,14 +10,16 @@ import sys,re,json
 #爬虫系统 
 
 config = {
-    'host':"127.0.0.1",
+    'server':"127.0.0.1",
     'user':"zhanglin",
-    'passwd':"jeroami233",
+    'password':"jeroami233",
     'database':"SpiderData",
-    'port':1433,
+    'port': '1433'
 }
 
-db = pymysql.connect(**config)
+db = pymssql.connect(**config)
+print(db)
+db.close()
 
 current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
