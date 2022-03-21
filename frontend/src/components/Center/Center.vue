@@ -3,7 +3,7 @@
         <div id="index">
             <ul>
                 <li v-for="item in indexlist" :key='item.title'>
-                    <a :href="item.link">{{ item.title }}</a>
+                    <router-link :to="item.to">{{ item.title }}</router-link>
                 </li>
             </ul>
         </div>

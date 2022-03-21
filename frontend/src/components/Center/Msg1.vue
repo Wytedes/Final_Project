@@ -4,7 +4,10 @@
 
 <script>
 export default {
-    name: 'Msg1',
+    name: 'Msg_One',
+    mounted() {
+      console.log(this)
+    },
 }
 </script>
 

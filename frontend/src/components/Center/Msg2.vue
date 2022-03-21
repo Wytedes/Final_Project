@@ -1,10 +1,10 @@
 <template>
-  <h1>你所热爱的就是你的生活</h1>
+  <h1>柠檬什么时候酸？</h1>
 </template>
 
 <script>
 export default {
-    name: 'Msg1',
+    name: 'Msg_Two',
 }
 </script>
 

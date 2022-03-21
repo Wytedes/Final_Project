@@ -18,15 +18,13 @@ config = {
 }
 
 db = pymssql.connect(**config)
-print(db)
-db.close()
 
 current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_3) AppleWebKit/535.20 (KHTML, like Gecko) Chrome/19.0.1036.7 Safari/535.20',
     # 'content-type': 'text/html;charset=utf-8',
-}
+    }
 
 def getdetail(url):
     req = requests.get(url, headers=headers, timeout=10)
@@ -37,41 +35,69 @@ def getdetail(url):
     author = re.findall('"author":(.*?),"cover"', req.text)[0][:-2]
     return count, detail, author
 
+Movies = []
 def MovieSpider(page):
-
+    print(f'Reading Page{page}...', end='')
     url = f'http://movie.douban.com/top250?start={page * 25}'
     
     req = requests.get(url, headers=headers, timeout=10)
     response = req.content.decode('utf-8')
     selector = etree.HTML(response)
 
-    # 获取电影名称[(中文名[, 外文名, ...,]), (中文名[, 外文名, ...,]), ...]
     
-    movie_list = selector.xpath('//div[@class="info"]/div[@class="hd"]/a')
-    movie_title_item_list = [tuple(i.xpath('span[@class="title"]/text()')) for i in movie_list]
-    title_list = [tuple([n.encode().decode('utf-8') for n in i]) for i in movie_title_item_list]
-    # result
-    title_list = [tuple(n.replace(u'\xa0', '').replace('/', '') for n in i) for i in title_list]
+    def get_movie_list(): # 获取电影名称[(中文名[, 外文名, ...,]), (中文名[, 外文名, ...,]), ...]
+        movie_list = selector.xpath('//div[@class="info"]/div[@class="hd"]/a')
+        movie_title_item_list = [tuple(i.xpath('span[@class="title"]/text()')) for i in movie_list]
+        title_list = [tuple([n.encode().decode('utf-8') for n in i]) for i in movie_title_item_list]
+        # result
+        title_list = [tuple(n.replace(u'\xa0', '').replace('/', '') for n in i) for i in title_list]
+        return title_list
     
-    # 获取电影分类/描述
-    movie_description = selector.xpath('//div[@class="info"]/div[@class="bd"]/p')
-    description_item_list = [tuple([i.encode('utf-8').decode('utf-8').replace('\n', '').strip() for i in p.xpath('text()')]) for p in movie_description]
-    # result
-    description_item_list = [tuple(s.replace(u'\xa0', '') for s in item) for item in description_item_list if any(item)]
-    desc_list = [i[1].split('/')[2] for i in description_item_list]
-    print(json.dumps(desc_list, indent=2, ensure_ascii=False))
-    print(len(desc_list))
+    
+    def get_movie_desc(): # 获取电影分类/描述
+        movie_description_p = selector.xpath('//div[@class="info"]/div[@class="bd"]/p')
+        description_item_list = [tuple([i.encode('utf-8').decode('utf-8').replace('\n', '').strip() for i in p.xpath('text()')]) for p in movie_description_p]
+        # result
+        description_item_list = [tuple(s.replace(u'\xa0', '') for s in item) for item in description_item_list if any(item)]
+        desc_list = [i[1].split('/')[-1] for i in description_item_list]
+        return desc_list
+    
+    def get_rating_num(): # 获取电影评分
+        movie_rating_span = selector.xpath('//div[@class="info"]//span[@class="rating_num"]/text()')
+        rating_list = [float(i.encode().decode('utf-8')) for i in movie_rating_span]
+        return rating_list
+    
+    row = zip(get_movie_list(), get_movie_desc(), get_rating_num())
+    for i in row:
+        Movie = {}
+        Movie['title'] = i[0][0]
+        Movie['oth_title'] = i[0][1] if len(i[0]) > 1 else ''
+        Movie['category'] = i[1]
+        Movie['rating_num'] = i[2]
+        Movies.append(Movie)
+    time.sleep(0.5)
+    
+    # desc_list = get_movie_desc()
+    # print(json.dumps(desc_list, indent=2, ensure_ascii=False))
+    # print(len(desc_list))
     
     
     # 数据库
-    """ cur = db.cursor()
-    for name, link, tag,author,scorenum, bcount, detail in zip(list_name, list_book,list_tag, list_author,list_score,list_count, list_detail):
-        insert = "INSERT INTO `myapp_book`(id, cate_id,name, link, tag,author,scorenum,bcount, detail,time) VALUES(NULL,NULL, '%s', '%s', '%s', '%s', '%s','%s', '%s','%s')" %(name, link, tag,author,scorenum,bcount, detail,current_time)
+    
+    cur = db.cursor()
+    
+    for Movie in Movies:
+        insert = f"INSERT INTO Movies VALUES(N\"{Movie['title']}\", N\"{Movie['oth_title']}\", N\"{Movie['category']}\", {Movie['rating_num']})".replace('\'', '\'\'').replace('\"', '\'')
+        print([insert])
         cur.execute(insert)
-        db.commit()
-    cur.close() """
+        
+    db.commit()
+    cur.close()
+   
 
 
 if __name__ == '__main__':
-    # for p in range(1,3):
-    MovieSpider(0)
+    print('Begin')
+    for p in range(0,25):
+        MovieSpider(p)
+    # db.close()
