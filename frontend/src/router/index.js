@@ -3,29 +3,34 @@ import VueRouter from 'vue-router'
 import Msg1 from '../components/Center/Msg1'
 import Msg2 from '../components/Center/Msg2'
 import Login from '@/components/login'
-import HelloWorld from '@/components/HelloWorld'
+import HomePage from '@/components/HomePage'
 
 export default new VueRouter({
     routes:[
         {
             path: '/',
-            component: Login
+            component: HomePage,
+            children:[
+                
+                {
+                    path: 'Msg1',
+                    component: Msg1,
+                    /* children:[
+                        { }
+                    ] */
+                },
+                {
+                    path: 'Msg2',
+                    component: Msg2,
+                    
+                },
+            ]
         },
+
         {
-            path: '/HelloWorld',
-            component: HelloWorld
+            path: '/login',
+            component: Login,
         },
-        {
-            path: '/Msg1',
-            component: Msg1,
-            /* children:[
-                { }
-            ] */
-        },
-        {
-            path: '/Msg2',
-            component: Msg2,
-            
-        },
-    ]
+    ],
 })
+
