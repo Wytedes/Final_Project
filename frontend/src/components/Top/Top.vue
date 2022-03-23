@@ -16,7 +16,6 @@ export default {
     },
     methods: {
         expandIndex () {
-            this.$store.commit('expandChange')
             var li1 = document.querySelectorAll("#top ul li:nth-child(1)");
             if(li1.length>0){
                 li1[0].style.width = this.expand ? "200px":"100px";
@@ -32,7 +31,10 @@ export default {
         this.expandIndex();
         var li1 = document.querySelectorAll("#top ul li:nth-child(1)");
         if(li1.length>0){
-            li1[0].onclick = this.expandIndex
+            li1[0].onclick = () => {
+                this.$store.commit('expandChange');
+                this.expandIndex();
+            }
         }
     },
 }
