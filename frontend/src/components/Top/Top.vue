@@ -13,26 +13,20 @@ export default {
     name: 'TopBar',
     props:{
         indexlist: Array,
-        expand: Boolean
-    },
-    data() {
-        return {
-            flag: this.expand,
-        }
     },
     methods: {
         expandIndex () {
+            this.$store.commit('expandChange')
             var li1 = document.querySelectorAll("#top ul li:nth-child(1)");
             if(li1.length>0){
-                li1[0].style.width = this.flag ? "200px":"100px";
+                li1[0].style.width = this.expand ? "200px":"100px";
             }
-            this.flag = !this.flag
         }
     },
-    watch:{
-        flag(value, newvalue) {
-            this.$emit('expand', newvalue);
-        },
+    computed:{
+        expand(){
+            return this.$store.state.expand;
+        }
     },
     mounted() {
         this.expandIndex();
@@ -97,6 +91,6 @@ export default {
     #top #login {
         float: right;
         height: 100%;
-        
+
     }
 </style>

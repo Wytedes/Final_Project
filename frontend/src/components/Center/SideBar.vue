@@ -13,11 +13,15 @@ export default {
     name:'SideBar',
     props: {
         indexlist: Array,
-        expand: Boolean
     },
-    data() {
-        return {
-            flag: this.expand,
+    computed:{
+        expand(){
+            return this.$store.state.expand;
+        }
+    },
+    watch:{
+        expand(){
+            this.expandIndex();
         }
     },
     methods: {
@@ -29,15 +33,6 @@ export default {
                 indexa[i].style.justifyContent = this.expand ? "flex-end":"flex-start"
             }
         },
-    },
-    watch:{
-        expand: {
-            handler(value, newvalue) {
-                value;
-                newvalue;
-                this.expandIndex();
-            },
-        }
     },
     mounted() {
         this.expandIndex();

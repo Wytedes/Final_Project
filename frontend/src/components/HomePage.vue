@@ -1,7 +1,7 @@
 <template>
     <div id="homepage">
-        <Top :indexlist="toplist" :expand="isexpand" @expand='expand'/>
-        <Center :indexlist="sidelist" :expand="isexpand"/>
+        <Top :indexlist="toplist"/>
+        <Center :indexlist="sidelist"/>
         <Footer/>
     </div>
 </template>
@@ -14,18 +14,19 @@ export default {
     name:'HomePage',
     data () {
     return {
+
       toplist:[
         {title: '目录', link: '#home'},
         {title: '新闻', link: '#news'},
         {title: '联系', link: '#contact'},
         {title: '关于', link: '#about'},
       ],
+
       sidelist:[
         {title: 'Msg1', to: '/Msg1'},
         {title: 'Msg2', to: '/Msg2'},
       ],
-      flag: -1,
-      isexpand: false,
+      
     }
   },
   components: {
@@ -33,11 +34,6 @@ export default {
     Center,
     Footer,
     // HelloWorld,
-  },
-  methods: {
-    expand(flag){
-      this.isexpand = flag;
-    }
   },
 }
 </script>

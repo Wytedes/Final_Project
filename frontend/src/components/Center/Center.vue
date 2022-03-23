@@ -1,6 +1,6 @@
 <template>
     <div id="center">
-        <SideBar :indexlist="indexlist" :expand="expand"></SideBar>
+        <SideBar :indexlist="indexlist"></SideBar>
         <div id="content">
             <!-- 指定组件的呈现位置 -->
             <router-view></router-view>
@@ -14,7 +14,6 @@ export default {
     name: "CenterContent",
     props:{
         indexlist: Array,
-        expand: Boolean
     },
     components:{
         SideBar,
