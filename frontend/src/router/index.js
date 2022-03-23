@@ -2,9 +2,19 @@
 import VueRouter from 'vue-router'
 import Msg1 from '../components/Center/Msg1'
 import Msg2 from '../components/Center/Msg2'
+import Login from '@/components/login'
+import HelloWorld from '@/components/HelloWorld'
 
 export default new VueRouter({
     routes:[
+        {
+            path: '/',
+            component: Login
+        },
+        {
+            path: '/HelloWorld',
+            component: HelloWorld
+        },
         {
             path: '/Msg1',
             component: Msg1,
@@ -15,6 +25,7 @@ export default new VueRouter({
         {
             path: '/Msg2',
             component: Msg2,
+            
         },
     ]
 })

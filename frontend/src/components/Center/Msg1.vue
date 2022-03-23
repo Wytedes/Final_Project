@@ -1,5 +1,8 @@
 <template>
+<div>
   <h1>你所热爱的就是你的生活</h1>
+  <router-view></router-view>
+</div>
 </template>
 
 <script>

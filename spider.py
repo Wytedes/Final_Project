@@ -17,8 +17,6 @@ config = {
     'port': '1433'
 }
 
-db = pymssql.connect(**config)
-
 current_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
 
 headers = {
@@ -26,17 +24,8 @@ headers = {
     # 'content-type': 'text/html;charset=utf-8',
     }
 
-def getdetail(url):
-    req = requests.get(url, headers=headers, timeout=10)
-    response = req.content
-    selector = etree.HTML(response)
-    count = selector.xpath('//span[@class="addListCount"]/text()')
-    detail = re.findall('"description":(.*?),"shielded"', req.text)[0][:-2]
-    author = re.findall('"author":(.*?),"cover"', req.text)[0][:-2]
-    return count, detail, author
 
-Movies = []
-def MovieSpider(page):
+def MovieSpider(page, db):
     print(f'Reading Page{page}...', end='')
     url = f'http://movie.douban.com/top250?start={page * 25}'
     
@@ -67,13 +56,20 @@ def MovieSpider(page):
         rating_list = [float(i.encode().decode('utf-8')) for i in movie_rating_span]
         return rating_list
     
-    row = zip(get_movie_list(), get_movie_desc(), get_rating_num())
+    def get_picture_link():
+        img_list = selector.xpath('//div[@class="item"]//img/@src')
+        img_list = [i.encode().decode('utf-8') for i in img_list]
+        return img_list
+        
+    Movies = []
+    row = zip(get_movie_list(), get_movie_desc(), get_rating_num(), get_picture_link())
     for i in row:
         Movie = {}
         Movie['title'] = i[0][0]
         Movie['oth_title'] = i[0][1] if len(i[0]) > 1 else ''
         Movie['category'] = i[1]
         Movie['rating_num'] = i[2]
+        Movie['picture'] = i[3]
         Movies.append(Movie)
     time.sleep(0.5)
     
@@ -83,14 +79,13 @@ def MovieSpider(page):
     
     
     # 数据库
-    
     cur = db.cursor()
-    
     for Movie in Movies:
-        insert = f"INSERT INTO Movies VALUES(N\"{Movie['title']}\", N\"{Movie['oth_title']}\", N\"{Movie['category']}\", {Movie['rating_num']})".replace('\'', '\'\'').replace('\"', '\'')
-        print([insert])
+        insert = f"INSERT INTO Movies VALUES(N\"{Movie['title']}\", N\"{Movie['oth_title']}\", N\"{Movie['category']}\", {Movie['rating_num']}, \"{Movie['picture']}\")"\
+                 .replace('\'', '\'\'')\
+                 .replace('\"', '\'')
+        print(insert)
         cur.execute(insert)
-        
     db.commit()
     cur.close()
    
@@ -98,6 +93,10 @@ def MovieSpider(page):
 
 if __name__ == '__main__':
     print('Begin')
-    for p in range(0,25):
-        MovieSpider(p)
-    # db.close()
+    db = pymssql.connect(**config)
+    cur = db.cursor()
+    cur.execute('delete from Movies')
+    db.commit()
+    for p in range(0,10):
+        MovieSpider(p, db)
+    db.close()
