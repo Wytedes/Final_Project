@@ -1,8 +1,11 @@
+from textwrap import indent
 from django.shortcuts import render
 from django.template import loader
 # Create your views here.
 from django.http import HttpResponse, JsonResponse
 from .models import Question, Movie
+from django.views.decorators.csrf import csrf_exempt
+
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -24,6 +27,7 @@ def vote(request, question_id):
     response = f'You\'re voting on question {question_id}'
     return HttpResponse(response)
 
+@csrf_exempt
 def get_movie_list(request):
     movie_list = Movie.objects.all()
     movie_object_list = [{
@@ -33,4 +37,4 @@ def get_movie_list(request):
             'rating_num': movie.rating_num,
             'picture': movie.picture
         } for movie in movie_list]
-    return JsonResponse(movie_object_list, safe=False)
+    return JsonResponse(movie_object_list, safe=False, json_dumps_params={'ensure_ascii':False, 'indent':4})
