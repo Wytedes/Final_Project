@@ -7,3 +7,4 @@ class user(models.Model):
     def __str__(self):
         return '\n'+json.dumps({'user': self.account, 'password': self.password}, indent=4)+'\n'
     
+    

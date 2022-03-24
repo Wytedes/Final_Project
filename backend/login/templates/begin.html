@@ -23,7 +23,7 @@
 </head>
 <body>
     <div class="out">
-        <form action="{% url 'login:login' %}" method="get">
+        <form action="{% url 'login:login' %}" method="post">
             {% csrf_token %}
             账号：<input name="account"><br>
             密码：<input name="password" type="password"><br>
@@ -39,8 +39,9 @@
     <div class="bl"></div>
 
     <script>
+        // 原生JS
+        //以字符串形式返回Object
         function getResponseMsg1() {
-            // 原生JS
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("POST", "{% url 'login:login' %}", true);
             xmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -52,7 +53,9 @@
                 }
             };
         }
-
+        
+        //axios传递form data
+        //返回Object
         function getResponseMsg2() {
             let param = new URLSearchParams('account=zhanglin&password=654321');
             // param.append('account', 'zhanglin');
@@ -71,7 +74,9 @@
                 console.log("执行完成")
             });  
         }
-
+        
+        // axios 字典转换成form data
+        //返回Object
         function getResponseMsg3() {
             let param = new URLSearchParams('account=zhanglin&password=654321');
             // param.append('account', 'zhanglin');

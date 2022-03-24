@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.template import loader
 # Create your views here.
-from django.http import HttpResponse
-from .models import Question
+from django.http import HttpResponse, JsonResponse
+from .models import Question, Movie
 
 def index(request):
     latest_question_list = Question.objects.order_by('-pub_date')[:5]
@@ -23,3 +23,14 @@ def results(request, question_id):
 def vote(request, question_id):
     response = f'You\'re voting on question {question_id}'
     return HttpResponse(response)
+
+def get_movie_list(request):
+    movie_list = Movie.objects.all()
+    movie_object_list = [{
+            'title': movie.title,
+            'oth_title': movie.oth_title,
+            'category': movie.category,
+            'rating_num': movie.rating_num,
+            'picture': movie.picture
+        } for movie in movie_list]
+    return JsonResponse(movie_object_list, safe=False)
