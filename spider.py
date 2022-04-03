@@ -81,7 +81,7 @@ def MovieSpider(page, db):
     # 数据库
     cur = db.cursor()
     for Movie in Movies:
-        insert = f"INSERT INTO Movies VALUES(N\"{Movie['title']}\", N\"{Movie['oth_title']}\", N\"{Movie['category']}\", {Movie['rating_num']}, \"{Movie['picture']}\")"\
+        insert = f"INSERT INTO polls_movie (title, oth_title, category, rating_num, picture) VALUES(N\"{Movie['title']}\", N\"{Movie['oth_title']}\", N\"{Movie['category']}\", {Movie['rating_num']}, \"{Movie['picture']}\")"\
                  .replace('\'', '\'\'')\
                  .replace('\"', '\'')
         print(insert)
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     print('Begin')
     db = pymssql.connect(**config)
     cur = db.cursor()
-    cur.execute('delete from Movies')
+    # cur.execute('delete from polls_movie')
     db.commit()
     for p in range(0,10):
         MovieSpider(p, db)

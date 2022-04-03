@@ -38,3 +38,22 @@ def get_movie_list(request):
             'picture': movie.picture
         } for movie in movie_list]
     return JsonResponse(movie_object_list, safe=False, json_dumps_params={'ensure_ascii':False, 'indent':4})
+
+@csrf_exempt
+def get_movie_list_categories(request):
+    movie_list = Movie.objects.all()
+    movie_category_dict = {}
+    
+    # 统计类别频率
+    for movie in movie_list:
+        for category in movie.category.split(' '):
+            if category == '剧情':
+                continue
+            elif movie_category_dict.get(category) is not None:
+                movie_category_dict[category] += 1
+            else:
+                movie_category_dict[category] = 1
+                
+    categories_sort_by_frequency = sorted(movie_category_dict.items(), key=lambda x: x[1], reverse=True)
+    
+    return JsonResponse(categories_sort_by_frequency, safe=False, json_dumps_params={'ensure_ascii':False, 'indent':4})

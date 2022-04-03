@@ -1,9 +1,11 @@
 <template>
     <div id="center">
-        <SideBar :indexlist="indexlist"></SideBar>
+        <!-- <SideBar :indexlist="indexlist"></SideBar> -->
         <div id="content">
             <!-- 指定组件的呈现位置 -->
-            <router-view></router-view>
+            <keep-alive include="Msg1">
+                <router-view></router-view>
+            </keep-alive>
         </div>
     </div>
 </template>
@@ -32,9 +34,10 @@ export default {
     }
 
     #center #content {
+
         flex: 1 0 500px;
         height: 100%;
-        background: rgb(50, 86, 92);
+        background: rgb(129, 129, 129);
     }
 
 </style>

@@ -1,13 +1,15 @@
 <template>
-  <div>
-    <Movie
-    :title="movie_list[0]['title']"
-    :oth_title="movie_list[0]['oth_title']"
-    :category="movie_list[0]['category']"
-    :picture="movie_list[0]['picture']"
-    :rating_num="movie_list[0]['rating_num']"
-    >
-    </Movie>
+  <div id="Content">
+    <div id="post" v-for="(movie, index) in movie_list" :key="index">
+      <Movie
+        :title="movie['title']"
+        :oth_title="movie['oth_title']"
+        :category="movie['category']"
+        :picture="movie['picture']"
+        :rating_num="movie['rating_num']"
+      >
+      </Movie>
+    </div>
   </div>
 </template>
 
@@ -18,13 +20,15 @@ export default {
 
   data() {
     return {
-      movie_list: [{
-        title:'',
-        oth_title:'',
-        category:'',
-        picture:'',
-        rating_num:0,
-      }],
+      movie_list: [
+        {
+          title: "",
+          oth_title: "",
+          category: "",
+          picture: "",
+          rating_num: undefined,
+        },
+      ],
     };
   },
 
@@ -66,11 +70,21 @@ export default {
       })
       .then(function () {
         // 总是会执行
-        console.log("执行完成");
+        // console.log("执行完成");
       });
   },
 };
 </script>
 
 <style>
+#Content{
+  display:flex;
+  flex-flow: row wrap;
+
+  justify-content: space-around;
+}
+#post{
+  display:flex;
+  flex:0 0 33%;
+}
 </style>

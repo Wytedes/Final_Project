@@ -11,9 +11,8 @@ export default new VueRouter({
             path: '/',
             component: HomePage,
             children:[
-                
                 {
-                    path: 'Msg1',
+                    path: '',
                     component: Msg1,
                     /* children:[
                         { }
