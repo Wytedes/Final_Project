@@ -37,6 +37,9 @@ def get_movie_list(request):
             'rating_num': movie.rating_num,
             'picture': movie.picture
         } for movie in movie_list]
+    category = request.GET.get('category', '全部')
+    if category!='全部':
+        movie_object_list = [movie for movie in movie_object_list if category in movie['category']]
     return JsonResponse(movie_object_list, safe=False, json_dumps_params={'ensure_ascii':False, 'indent':4})
 
 @csrf_exempt

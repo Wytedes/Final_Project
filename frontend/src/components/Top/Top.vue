@@ -17,8 +17,9 @@
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
-    >
-        <el-menu-item v-for="(category, index) in categories" :key="index" :index="(index+1).toString()">{{category[0]}}</el-menu-item>
+    >   
+        <el-menu-item index="全部">全部</el-menu-item>
+        <el-menu-item v-for="(category, index) in categories" :key="index" :index="category[0]">{{category[0]}}</el-menu-item>
         <el-submenu index="worktable">
             <template slot="title">我的工作台</template>
             <el-menu-item index="2-1">选项1</el-menu-item>
@@ -44,7 +45,7 @@ export default {
   },
   data(){
       return {
-          activeIndex2: '1',
+          activeIndex2: '全部',
           categories:[],
       }
   },
@@ -55,6 +56,8 @@ export default {
     },
     handleSelect(key, keyPath) {
         console.log(key, keyPath);
+        this.$store.commit('changeCategory', key)
+        // this.$router.push({path: '/', query: {category: key}})
     },
   },
   computed: {

@@ -11,12 +11,16 @@ const actions = {
 const mutations = {
     expandChange(state){
         state.expand = !state.expand
+    },
+    changeCategory(state, category){
+        state.category = category
     }
 }
 
 //准备state——用于存储数据
 const state = {
     expand: false,
+    category:'全部',
 }
 
 const getters = {

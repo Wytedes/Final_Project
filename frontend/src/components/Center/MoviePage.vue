@@ -1,14 +1,18 @@
 <template>
   <div id="Content">
-    <div id="post" v-for="(movie, index) in movie_list" :key="index">
-      <Movie
-        :title="movie['title']"
-        :oth_title="movie['oth_title']"
-        :category="movie['category']"
-        :picture="movie['picture']"
-        :rating_num="movie['rating_num']"
-      >
-      </Movie>
+    <div id="MovieList">
+      <template v-for="m in movie_list">
+        <div id="post" v-if="IsShow(m)" :key="m.title">
+          <Movie
+            :title="m['title']"
+            :oth_title="m['oth_title']"
+            :category="m['category']"
+            :picture="m['picture']"
+            :rating_num="m['rating_num']"
+          >
+          </Movie>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -16,7 +20,7 @@
 <script>
 import Movie from "./Movie.vue";
 export default {
-  name: "Msg_One",
+  name: "MoviePage",
 
   data() {
     return {
@@ -31,6 +35,42 @@ export default {
       ],
     };
   },
+
+  computed: {
+    category() {
+      return this.$store.state.category;
+    },
+  },
+
+  methods: {
+    IsShow(movie){
+      if(this.category=='全部' || movie.category.includes(this.category)) return true;
+      else return false;
+    },
+  },
+/* 
+  watch: {
+    category(newvalue) {
+      this.$http
+        .get("/api/polls/movie/", {
+          params: {
+            category: newvalue,
+          },
+        })
+        .then((response) => {
+          this.movie_list = response.data;
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          // 总是会执行
+          // console.log("执行完成");
+        });
+    },
+    
+  }, */
 
   components: {
     Movie,
@@ -77,14 +117,19 @@ export default {
 </script>
 
 <style>
-#Content{
-  display:flex;
+#Content {
+  display: flex;
+  flex-flow: row nowrap;
+}
+#MovieList {
+  display: flex;
+  flex:0 0 40%;
   flex-flow: row wrap;
 
-  justify-content: space-around;
+  justify-content: flex-start;
 }
-#post{
-  display:flex;
-  flex:0 0 33%;
+#post {
+  display: flex;
+  flex: 0 0 25%;
 }
 </style>

@@ -1,6 +1,6 @@
 //该文件用于创建整个应用的路由器
 import VueRouter from 'vue-router'
-import Msg1 from '../components/Center/Msg1'
+import MoviePage from '../components/Center/MoviePage'
 import Msg2 from '../components/Center/Msg2'
 import Login from '@/components/login'
 import HomePage from '@/components/HomePage'
@@ -13,7 +13,7 @@ export default new VueRouter({
             children:[
                 {
                     path: '',
-                    component: Msg1,
+                    component: MoviePage,
                     /* children:[
                         { }
                     ] */
