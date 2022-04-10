@@ -35,9 +35,13 @@ export default {
 
     #center #content {
 
-        flex: 1 0 500px;
+        flex: 1 0 1000px;
         height: 100%;
         background: rgb(129, 129, 129);
+
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
     }
 
 </style>

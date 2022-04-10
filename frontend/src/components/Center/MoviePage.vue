@@ -1,19 +1,17 @@
 <template>
-  <div id="Content">
-    <div id="MovieList">
-      <template v-for="m in movie_list">
-        <div id="post" v-if="IsShow(m)" :key="m.title">
-          <Movie
-            :title="m['title']"
-            :oth_title="m['oth_title']"
-            :category="m['category']"
-            :picture="m['picture']"
-            :rating_num="m['rating_num']"
-          >
-          </Movie>
-        </div>
-      </template>
-    </div>
+  <div id="MovieList">
+    <template v-for="m in movie_list">
+      <div id="post" v-if="IsShow(m)" :key="m.title">
+        <Movie
+          :title="m['title']"
+          :oth_title="m['oth_title']"
+          :category="m['category']"
+          :picture="m['picture']"
+          :rating_num="m['rating_num']"
+        >
+        </Movie>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -117,19 +115,21 @@ export default {
 </script>
 
 <style>
-#Content {
-  display: flex;
-  flex-flow: row nowrap;
-}
 #MovieList {
   display: flex;
-  flex:0 0 40%;
+  flex:0 0 800px;
   flex-flow: row wrap;
 
   justify-content: flex-start;
+  align-items: flex-end;
+  align-content: flex-start;
+  border:2px solid rgb(161, 73, 0);
 }
 #post {
   display: flex;
   flex: 0 0 25%;
+  justify-content: center;
+
+  padding-bottom: 20px;
 }
 </style>

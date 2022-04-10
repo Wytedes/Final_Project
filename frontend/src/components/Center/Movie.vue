@@ -2,7 +2,7 @@
     <ul id='movie'>
         <li class="item"><div id="imgwrapper"><img :src="picture"/></div></li>
         <li class="item"><div class="text">{{title}}</div></li>
-        <li class="item"><div class="text">{{oth_title}}</div></li>
+        <li class="item"><div class="text">{{oth_title || "..."}}</div></li>
         <li class="item"><div class="text">{{category}}</div></li>
         <li class="item"><div class="text">{{rating_num}}</div></li>
     </ul>
@@ -30,11 +30,19 @@ export default {
         
         width:115px;
         margin: 0;
-        padding: 0;
+        padding: 10px;
 
         list-style-type: none;
+        border:2px solid rgb(0, 110, 124);
+    }
+    .item{
+        flex: 0 0 21px;
     }
     #imgwrapper {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: flex-start;
+
         width:100%;
         height: 160px;
         overflow: hidden;
