@@ -10,15 +10,15 @@ Vue.use(VueRouter)
 import axios from 'axios'
 Vue.prototype.$http = axios
 
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 //分别引入eleme组件
-import { Menu,MenuItem,Submenu  } from 'element-ui';
+// import { Menu,MenuItem,Submenu  } from 'element-ui';
 //应用eleme组件
-Vue.component(Menu.name, Menu)
-Vue.component(MenuItem.name, MenuItem)
-Vue.component(Submenu.name, Submenu)
-
+// Vue.component(Menu.name, Menu)
+// Vue.component(MenuItem.name, MenuItem)
+// Vue.component(Submenu.name, Submenu)
+Vue.use(ElementUI)
 //关闭生产提示
 Vue.config.productionTip = false
 

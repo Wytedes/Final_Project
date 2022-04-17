@@ -117,7 +117,7 @@ export default {
 <style>
 #MovieList {
   display: flex;
-  flex:0 0 800px;
+  flex:0 0 1500px;
   flex-flow: row wrap;
 
   justify-content: flex-start;
@@ -127,7 +127,7 @@ export default {
 }
 #post {
   display: flex;
-  flex: 0 0 25%;
+  flex: 0 0 16.6%;
   justify-content: center;
 
   padding-bottom: 20px;

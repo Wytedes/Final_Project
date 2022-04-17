@@ -9,33 +9,56 @@
         </ul>
    </div>
     -->
-    <el-menu
-        :default-active="activeIndex2"
-        class="el-menu-demo"
-        mode="horizontal"
-        @select="handleSelect"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b"
-    >   
-        <el-menu-item index="全部">全部</el-menu-item>
-        <el-menu-item v-for="(category, index) in categories" :key="index" :index="category[0]">{{category[0]}}</el-menu-item>
-        <!-- <el-submenu index="worktable">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
+  <el-menu
+    :default-active="activeIndex2"
+    class="el-menu-demo"
+    mode="horizontal"
+    @select="handleSelect"
+    background-color="#545c64"
+    text-color="#fff"
+    active-text-color="#ffd04b"
+  >
+    <el-menu-item index="全部">全部</el-menu-item>
+    <el-menu-item
+      v-for="(category, index) in categories.slice(0, 5)"
+      :key="index"
+      :index="category[0]"
+      >{{ category[0] }}</el-menu-item
+    >
+    <el-submenu index="worktable">
+      <template slot="title">更多分类</template>
+      <el-menu-item
+        v-for="(category, index) in categories.slice(5)"
+        :key="index"
+        :index="category[0]"
+        >{{ category[0] }}</el-menu-item
+      >
+      <!-- <el-submenu index="2-4">
                 <template slot="title">选项4</template>
                 <el-menu-item index="2-4-1">选项1</el-menu-item>
                 <el-menu-item index="2-4-2">选项2</el-menu-item>
                 <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-        </el-submenu> -->
-        <el-menu-item index="同性">推荐</el-menu-item>
-        <!-- <el-menu-item index="msgcen" :disabled="false">消息中心</el-menu-item>
+            </el-submenu> -->
+    </el-submenu>
+    <el-menu-item index="同性">推荐</el-menu-item>
+    <el-menu-item index="login" v-if="user === null"
+      ><router-link active-class="active" to="/login"
+        >登陆</router-link
+      ></el-menu-item
+    >
+    <el-submenu index="account" v-else>
+      <template slot="title">欢迎您！{{ user }}</template>
+      <el-menu-item index="logout">退出登陆</el-menu-item>
+      <!-- <el-submenu index="2-4">
+                <template slot="title">选项4</template>
+                <el-menu-item index="2-4-1">选项1</el-menu-item>
+                <el-menu-item index="2-4-2">选项2</el-menu-item>
+                <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu> -->
+    </el-submenu>
+    <!-- <el-menu-item index="msgcen" :disabled="false">消息中心</el-menu-item>
         <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item> -->
-    </el-menu>
+  </el-menu>
 </template>
 
 <script>
@@ -44,11 +67,11 @@ export default {
   props: {
     indexlist: Array,
   },
-  data(){
-      return {
-          activeIndex2: '全部',
-          categories:[],
-      }
+  data() {
+    return {
+      activeIndex2: "全部",
+      categories: [],
+    };
   },
   methods: {
     expandIndex() {
@@ -56,18 +79,27 @@ export default {
       indexa.style.flexBasis = this.expand ? "193px" : "93px";
     },
     handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-        this.$store.commit('changeCategory', key)
-        // this.$router.push({path: '/', query: {category: key}})
+      console.log(key, keyPath);
+      if (key == "logout") {
+        this.$http.get("/api/logout/");
+        this.$store.dispatch("check_login_status");
+      } else {
+        this.$store.commit("changeCategory", key);
+      }
+
+      // this.$router.push({path: '/', query: {category: key}})
     },
   },
   computed: {
     expand() {
       return this.$store.state.expand;
     },
+    user() {
+      return this.$store.state.login_user;
+    },
   },
   mounted() {
-/* 
+    /* 
     this.expandIndex();
     var indexa = document.getElementById("indexa");
     indexa.onclick = () => {
@@ -76,13 +108,16 @@ export default {
     };
      */
     this.$http
-      .get('/api/polls/movie/categories/')
-      .then((response)=>{
-        this.categories = response.data
+      .get("/api/polls/movie/categories/")
+      .then((response) => {
+        this.categories = response.data;
       })
       .catch(function (error) {
-        console.log('Get Categories Fail!')
-      })
+        console.log("Get Categories Fail!");
+      });
+
+    this.$store.dispatch("check_login_status");
+    console.log(this.user);
   },
 };
 </script>

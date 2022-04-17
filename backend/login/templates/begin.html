@@ -27,6 +27,7 @@
             {% csrf_token %}
             账号：<input name="account"><br>
             密码：<input name="password" type="password"><br>
+            <span>123 {{ user }}</span><br>
             <p id="msg"></p><br>
             <input value="login" type="submit">
 
@@ -39,7 +40,7 @@
     <div class="bl"></div>
 
     <script>
-        // 原生JS
+        // 原生JS --1
         //以字符串形式返回Object
         function getResponseMsg1() {
             var xmlHttp = new XMLHttpRequest();
@@ -54,7 +55,7 @@
             };
         }
         
-        //axios传递form data
+        //axios传递form data --2
         //返回Object
         function getResponseMsg2() {
             let param = new URLSearchParams('account=zhanglin&password=654321');
@@ -75,7 +76,7 @@
             });  
         }
         
-        // axios 字典转换成form data
+        // axios 字典转换成form data --3
         function getResponseMsg3() {
             let param = new URLSearchParams('account=zhanglin&password=654321');
             // param.append('account', 'zhanglin');

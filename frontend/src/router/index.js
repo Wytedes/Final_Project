@@ -4,6 +4,7 @@ import MoviePage from '../components/Center/MoviePage'
 import Msg2 from '../components/Center/Msg2'
 import Login from '@/components/login'
 import HomePage from '@/components/HomePage'
+import Registry from '@/components/registry'
 
 export default new VueRouter({
     routes:[
@@ -29,6 +30,11 @@ export default new VueRouter({
         {
             path: '/login',
             component: Login,
+        },
+
+        {
+            path: '/registry',
+            component: Registry,
         },
     ],
 })
